@@ -1,0 +1,23 @@
+name: logohunter
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - numpy=1.19.2
+  - scipy
+  - pillow
+  - matplotlib
+  - opencv
+  - h5py
+  - scikit-learn
+  - tensorflow-gpu=2.4.1
+  - keras
+  - pyyaml
+  - pip
+  - cudatoolkit=11.0
+  - cudnn=8.0
+  - mkl-service
+  - pip:
+    - tensorflow-gpu==2.4.1
+
