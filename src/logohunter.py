@@ -14,6 +14,7 @@ from similarity import load_brands_compute_cutoffs
 from utils import load_extractor_model, load_features, model_flavor_from_name, parse_input
 import test
 import utils
+from report_generator import create_report_from_detections
 
 sim_threshold = 0.95
 output_txt = 'out.txt'
@@ -192,26 +193,49 @@ if __name__ == '__main__':
         start = timer()
         # cycle trough input images, look for logos and then match them against inputs
         text_out = ''
+        detections_for_report = []
+        
         for i, img_path in enumerate(FLAGS.input_images):
-            text = img_path
-            prediction, image = detect_logo(yolo, img_path, save_img = save_img_logo,
-                                              save_img_path = FLAGS.output,
-                                              postfix='_logo')
+            prediction, image = detect_logo(yolo, img_path, save_img=save_img_logo,
+                                         save_img_path=FLAGS.output,
+                                         postfix='_logo')
 
-            text = match_logo(image, prediction, (model, my_preprocess), text,
-                      (feat_input, sim_cutoff, bins, cdf_list, input_labels),
-                      save_img = save_img_match, save_img_path=FLAGS.output)
-            print(text)
-            text_out += text
+            if prediction is None or len(prediction) == 0:
+                print(f"No logos detected in {img_path}")
+                text_out += f"{img_path}\n"
+                continue
 
-        if FLAGS.save_to_txt:
-            with open(output_txt,'w') as txtfile:
-                txtfile.write(text_out)
-
-        end = timer()
-        print('Processed {} images in {:.1f}sec - {:.1f}FPS'.format(
-             len(FLAGS.input_images), end-start, len(FLAGS.input_images)/(end-start)
-             ))
+            # Match logos against input
+            text_out = img_path
+            try:
+                prediction, matches, confidence_scores = match_logo(
+                    image, prediction, (model, my_preprocess),
+                    text_out, (feat_input, sim_cutoff, (bins, cdf_list))
+                )
+                
+                # Add results to report data
+                detections_for_report.append((img_path, prediction, confidence_scores, matches))
+                
+                # Print matches
+                for idx, (logo_name, similarity) in matches.items():
+                    bb = prediction[idx]
+                    print(f'Logo #{idx} - {tuple(bb[:2])} {tuple(bb[2:4])} - classified as {logo_name} {similarity:.2f}')
+                    text_out += f' {bb[0]},{bb[1]},{bb[2]},{bb[3]},{logo_name},{bb[4]:.2f},{similarity:.3f}'
+                
+            except Exception as e:
+                print(f"Error processing matches for {img_path}: {e}")
+                
+            text_out += '\n'
+            
+        # Generate report if we have detections
+        if detections_for_report:
+            try:
+                create_report_from_detections(detections_for_report)
+                print("\nReport generated successfully!")
+            except Exception as e:
+                print(f"\nError generating report: {e}")
+        
+        print(f"\nTotal time: {timer() - start:.1f}s")
 
     # video mode
     # elif FLAGS.video:

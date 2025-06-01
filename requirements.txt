@@ -1,0 +1,5 @@
+numpy>=1.19.2
+opencv-python>=4.5.1
+Pillow>=8.1.0
+reportlab>=3.6.8
+matplotlib>=3.3.4 

@@ -1,0 +1,11 @@
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_blurred.png 242.9205322265625,232.91485595703125,295.6759033203125,315.1197814941406,lexus,315.12,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_color_shift.png 242.86383056640625,232.6387176513672,295.4110412597656,315.0725402832031,lexus,315.07,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_combo.png
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_contrast.png 242.44207763671875,232.3223114013672,295.698486328125,315.1469421386719,lexus,315.15,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_edge_enhanced.png 242.6290283203125,230.41709899902344,294.1083679199219,314.9582214355469,lexus,314.96,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_noise.png
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_rotated_-2.png 253.9026641845703,240.05429077148438,307.3729553222656,324.8912658691406,lexus,324.89,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_rotated_-5.png 267.92889404296875,250.59768676757812,322.2960510253906,334.052978515625,lexus,334.05,0.998
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_rotated_2.png 255.6190948486328,242.4480743408203,310.37548828125,326.3303527832031,lexus,326.33,1.000
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_rotated_5.png 271.68927001953125,254.58767700195312,329.0386962890625,340.26641845703125,lexus,340.27,0.999
+/mnt/c/Users/Diogo/Desktop/AOOP/logohunter_new/data/modified_logos/lexus/lexus_stretched.png

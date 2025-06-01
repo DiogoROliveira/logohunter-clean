@@ -243,37 +243,44 @@ def bbox_colors(n):
 
     return colors.astype(int)
 
-def contents_of_bbox(img, bbox_list, expand=1.):
+def contents_of_bbox(img, bbox_list):
     """
-    Extract portions of image inside  bounding boxes list.
-
+    Extract portions of image inside bounding boxes.
+    
     Args:
-      img: (H,W,C) image array
-      bbox_list: list of bounding box specifications, with first 4 elements
-      specifying box corners in (xmin, ymin, xmax, ymax) format.
+        img: image array
+        bbox_list: list of bounding box specifications, of form (xmin, ymin, xmax, ymax)
     Returns:
-      candidates: list of 3D image arrays
-      i_candidates_too_small: list of indices of small candidates dropped
+        candidates: list of image arrays for each bounding box
+        i_small: list of indices of bounding boxes whose area is <0.1% of total image area
     """
-
-    candidates =[]
-    i_candidates_too_small = []
+    # If no bounding boxes, return empty lists
+    if bbox_list is None or len(bbox_list) == 0:
+        return [], []
+        
+    candidates = []
+    i_small = []
+    
     for i, (xmin, ymin, xmax, ymax, *_) in enumerate(bbox_list):
-
-        # for very low confidence sometimes logos found outside of the image
-        if ymin > img.shape[0] or xmin > img.shape[1]:
+        try:
+            # Extract image contents of bounding box
+            xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
+            crop = img[ymin:ymax, xmin:xmax]
+            
+            # Check size of bbox (boxes covering less than 0.1% of image will be ignored)
+            box_size = (ymax-ymin)*(xmax-xmin)
+            img_size = img.shape[0]*img.shape[1]
+            
+            if box_size < img_size/1000:
+                i_small.append(i)
+            else:
+                candidates.append(crop)
+        except Exception as e:
+            print(f"Error processing bounding box {i}: {e}")
+            i_small.append(i)
             continue
-
-        xmin, ymin = int(xmin//expand), int(ymin//expand)
-        xmax, ymax = int(np.round(xmax//expand)), int(np.round(ymax//expand))
-
-        # do not even consider tiny logos
-        if xmax-xmin > min_logo_size[1] and ymax-ymin > min_logo_size[0]:
-            candidates.append(img[ymin:ymax, xmin:xmax])
-        else:
-            i_candidates_too_small.append(i)
-
-    return candidates, i_candidates_too_small
+            
+    return candidates, i_small
 
 
 def draw_annotated_box(image, box_list_list, label_list, color_list):
